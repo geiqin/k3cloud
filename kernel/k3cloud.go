@@ -93,22 +93,22 @@ func (k *K3Cloud) View(ctx context.Context, formId string, data *object.HashMap)
 }
 
 // ExecuteBillQuery. 单据查询
-func (k *K3Cloud) ExecuteBillQuery(ctx context.Context, data *object.HashMap) (*object.HashMap, error) {
+func (k *K3Cloud) ExecuteBillQuery(ctx context.Context, data *object.HashMap) ([]byte, error) {
 	url := k.Config.Host + ExecuteBillQueryApi
 	var postData = &object.HashMap{
 		"data": data,
 	}
-	return k.Client.PostJson(ctx, k.Config, url, postData)
+	return k.Client.PostData(ctx, k.Config, url, postData)
 }
 
 
 // BillQuery. 单据查询 json
-func (k *K3Cloud) BillQuery(ctx context.Context, data *object.HashMap) (*object.HashMap, error) {
+func (k *K3Cloud) BillQuery(ctx context.Context, data *object.HashMap) ([]byte, error) {
 	url := k.Config.Host + BillQueryApi
 	var postData = &object.HashMap{
 		"data": data,
 	}
-	return k.Client.PostJson(ctx, k.Config, url, postData)
+	return k.Client.PostData(ctx, k.Config, url, postData)
 }
 
 //Operation. 操作
