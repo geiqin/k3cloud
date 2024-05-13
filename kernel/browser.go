@@ -201,7 +201,6 @@ func (b *Browser) PostData(ctx context.Context, c *K3Config, requestUrl string, 
 		return nil, errors.New("http read io result fail")
 	}
 	//var res object.HashMap
-	log.Println("---------response data------------",string(data))
 	_, ok := gjson.Parse(string(data)).Value().(map[string]interface{})
 	if !ok {
 		var k3Response [][]*resp.K3Response
@@ -218,15 +217,6 @@ func (b *Browser) PostData(ctx context.Context, c *K3Config, requestUrl string, 
 				}
 			}
 		}
-		/*
-		mm, okk := gjson.Parse(string(data)).Value().([]interface{})
-		if okk {
-			res = object.HashMap{
-				"data": mm,
-			}
-		}
-
-		 */
 	}
 	return data, nil
 }
