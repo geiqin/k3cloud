@@ -126,6 +126,7 @@ func (b *Browser) InitLogin(c *K3Config) error {
 	return nil
 }
 
+
 // PostJson. 发送Post请求Json格式数据
 func (b *Browser) PostJson(ctx context.Context, c *K3Config, requestUrl string, params *object.HashMap) (*object.HashMap, error) {
 	// 设置日志前缀和格式
@@ -149,7 +150,7 @@ func (b *Browser) PostJson(ctx context.Context, c *K3Config, requestUrl string, 
 		return nil, errors.New("http read io result fail")
 	}
 	var res object.HashMap
-	log.Println("---------response data------------",string(data))
+	//log.Println("---------response data------------",string(data))
 	res, ok := gjson.Parse(string(data)).Value().(map[string]interface{})
 	if !ok {
 		var k3Response [][]*resp.K3Response
@@ -174,4 +175,58 @@ func (b *Browser) PostJson(ctx context.Context, c *K3Config, requestUrl string, 
 		}
 	}
 	return &res, nil
+}
+
+
+// PostData. 发送Post请求Json格式数据
+func (b *Browser) PostData(ctx context.Context, c *K3Config, requestUrl string, params *object.HashMap) ([]byte, error) {
+	// 设置日志前缀和格式
+	log.SetPrefix("[Info]")
+	log.SetFlags(log.Ldate | log.Ltime)
+	postData, _ := object.JsonEncode(params)
+	request, _ := http.NewRequest("POST", requestUrl, strings.NewReader(postData))
+	// 携带ctx
+	request = request.WithContext(ctx)
+	request.Header.Set("Content-Type", "application/json")
+	b.setRequestCookie(request)
+	response, err := b.client.Do(request)
+	if err != nil {
+		return nil, errors.New("http post json fail")
+	}
+	defer response.Body.Close()
+	//保存响应的 cookie
+	b.cookies = response.Cookies()
+	data, e := ioutil.ReadAll(response.Body)
+	if e != nil {
+		return nil, errors.New("http read io result fail")
+	}
+	//var res object.HashMap
+	//log.Println("---------response data------------",string(data))
+	_, ok := gjson.Parse(string(data)).Value().(map[string]interface{})
+	if !ok {
+		var k3Response [][]*resp.K3Response
+		if e = json.Unmarshal(data, &k3Response); e == nil {
+			if len(k3Response) > 0  {
+				responseStatus := k3Response[0][0].Result.Status
+				if responseStatus.ErrorCode == http.StatusInternalServerError && responseStatus.Errors[0].Message == "会话信息已丢失，请重新登录" {
+					log.Println("没登录!")
+					if e = b.InitLogin(c); e == nil {
+						log.Println("登录成功!")
+						log.Println("重放请求!")
+						return b.PostData(ctx, c, requestUrl, params)
+					}
+				}
+			}
+		}
+		/*
+		mm, okk := gjson.Parse(string(data)).Value().([]interface{})
+		if okk {
+			res = object.HashMap{
+				"data": mm,
+			}
+		}
+
+		 */
+	}
+	return data, nil
 }
