@@ -44,6 +44,19 @@ func (k *K3Cloud) Save(ctx context.Context, formId string, data *object.HashMap)
 	return k.Client.PostJson(ctx, k.Config, url, postData)
 }
 
+//Save2.  保存
+//formId 表单ID
+//data   数据
+func (k *K3Cloud) Save2(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
+	url := k.Config.Host + SaveApi
+	var postData = &object.HashMap{
+		"formid": formId,
+		"data":   data,
+	}
+	return k.Client.PostData(ctx, k.Config, url, postData)
+}
+
+
 //BatchSave.  批量保存
 //formId      表单ID
 //data        数据
@@ -55,6 +68,7 @@ func (k *K3Cloud) BatchSave(ctx context.Context, formId string, data *object.Has
 	}
 	return k.Client.PostJson(ctx, k.Config, url, postData)
 }
+
 
 //Audit.  审核
 //formId  表单ID
