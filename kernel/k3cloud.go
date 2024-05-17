@@ -2,7 +2,9 @@ package kernel
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/geiqin/k3cloud/object"
+	"github.com/geiqin/k3cloud/response"
 )
 
 // K3Config. 金蝶云星空账号地址
@@ -35,13 +37,19 @@ func (k *K3Cloud) Submit(ctx context.Context, formId string, data *object.HashMa
 //Save.  保存
 //formId 表单ID
 //data   数据
-func (k *K3Cloud) Save(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
+func (k *K3Cloud) Save(ctx context.Context, formId string, data *object.HashMap) (*response.Result, error) {
 	url := k.Config.Host + SaveApi
 	var postData = &object.HashMap{
 		"formid": formId,
 		"data":   data,
 	}
-	return k.Client.PostData(ctx, k.Config, url, postData)
+	ret, err := k.Client.PostData(ctx, k.Config, url, postData)
+	var resp = &response.K3Response{}
+	err = json.Unmarshal(ret, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp.Result, err
 }
 
 //BatchSave.  批量保存
@@ -83,13 +91,20 @@ func (k *K3Cloud) UnAudit(ctx context.Context, formId string, data *object.HashM
 //View.  详情
 //formId 查询表单ID
 //data   查询数据
-func (k *K3Cloud) View(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
+func (k *K3Cloud) View(ctx context.Context, formId string, data *object.HashMap) (*response.Result, error) {
 	url := k.Config.Host + ViewApi
 	var postData = &object.HashMap{
 		"formid": formId,
 		"data":   data,
 	}
-	return k.Client.PostData(ctx, k.Config, url, postData)
+
+	ret, err := k.Client.PostData(ctx, k.Config, url, postData)
+	var resp = &response.K3Response{}
+	err = json.Unmarshal(ret, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp.Result, err
 }
 
 // ExecuteBillQuery. 单据查询
