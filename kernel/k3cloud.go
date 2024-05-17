@@ -23,32 +23,8 @@ type K3Cloud struct {
 //Submit.  提交
 //formId   表单ID
 //data     数据
-func (k *K3Cloud) Submit(ctx context.Context, formId string, data *object.HashMap) (*object.HashMap, error) {
+func (k *K3Cloud) Submit(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
 	url := k.Config.Host + SubmitApi
-	var postData = &object.HashMap{
-		"formid": formId,
-		"data":   data,
-	}
-	return k.Client.PostJson(ctx, k.Config, url, postData)
-}
-
-//Save.  保存
-//formId 表单ID
-//data   数据
-func (k *K3Cloud) Save(ctx context.Context, formId string, data *object.HashMap) (*object.HashMap, error) {
-	url := k.Config.Host + SaveApi
-	var postData = &object.HashMap{
-		"formid": formId,
-		"data":   data,
-	}
-	return k.Client.PostJson(ctx, k.Config, url, postData)
-}
-
-//Save2.  保存
-//formId 表单ID
-//data   数据
-func (k *K3Cloud) Save2(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
-	url := k.Config.Host + SaveApi
 	var postData = &object.HashMap{
 		"formid": formId,
 		"data":   data,
@@ -56,6 +32,17 @@ func (k *K3Cloud) Save2(ctx context.Context, formId string, data *object.HashMap
 	return k.Client.PostData(ctx, k.Config, url, postData)
 }
 
+//Save.  保存
+//formId 表单ID
+//data   数据
+func (k *K3Cloud) Save(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
+	url := k.Config.Host + SaveApi
+	var postData = &object.HashMap{
+		"formid": formId,
+		"data":   data,
+	}
+	return k.Client.PostData(ctx, k.Config, url, postData)
+}
 
 //BatchSave.  批量保存
 //formId      表单ID
@@ -69,41 +56,40 @@ func (k *K3Cloud) BatchSave(ctx context.Context, formId string, data *object.Has
 	return k.Client.PostJson(ctx, k.Config, url, postData)
 }
 
-
 //Audit.  审核
 //formId  表单ID
 //data    数据
-func (k *K3Cloud) Audit(ctx context.Context, formId string, data *object.HashMap) (*object.HashMap, error) {
+func (k *K3Cloud) Audit(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
 	url := k.Config.Host + AuditApi
 	var postData = &object.HashMap{
 		"formid": formId,
 		"data":   data,
 	}
-	return k.Client.PostJson(ctx, k.Config, url, postData)
+	return k.Client.PostData(ctx, k.Config, url, postData)
 }
 
 //UnAudit.  反审核
 //formId    表单ID
 //data      数据
-func (k *K3Cloud) UnAudit(ctx context.Context, formId string, data *object.HashMap) (*object.HashMap, error) {
+func (k *K3Cloud) UnAudit(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
 	url := k.Config.Host + UnAuditApi
 	var postData = &object.HashMap{
 		"formid": formId,
 		"data":   data,
 	}
-	return k.Client.PostJson(ctx, k.Config, url, postData)
+	return k.Client.PostData(ctx, k.Config, url, postData)
 }
 
 //View.  详情
 //formId 查询表单ID
 //data   查询数据
-func (k *K3Cloud) View(ctx context.Context, formId string, data *object.HashMap) (*object.HashMap, error) {
+func (k *K3Cloud) View(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
 	url := k.Config.Host + ViewApi
 	var postData = &object.HashMap{
 		"formid": formId,
 		"data":   data,
 	}
-	return k.Client.PostJson(ctx, k.Config, url, postData)
+	return k.Client.PostData(ctx, k.Config, url, postData)
 }
 
 // ExecuteBillQuery. 单据查询
@@ -114,7 +100,6 @@ func (k *K3Cloud) ExecuteBillQuery(ctx context.Context, data *object.HashMap) ([
 	}
 	return k.Client.PostData(ctx, k.Config, url, postData)
 }
-
 
 // BillQuery. 单据查询 json
 func (k *K3Cloud) BillQuery(ctx context.Context, data *object.HashMap) ([]byte, error) {
@@ -142,37 +127,37 @@ func (k *K3Cloud) Operation(ctx context.Context, formId, opNumber string, data *
 //Push.  下推
 //formId 表单ID
 //data   数据
-func (k *K3Cloud) Push(ctx context.Context, formId string, data *object.HashMap) (*object.HashMap, error) {
+func (k *K3Cloud) Push(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
 	url := k.Config.Host + PushApi
 	var postData = &object.HashMap{
 		"formid": formId,
 		"data":   data,
 	}
-	return k.Client.PostJson(ctx, k.Config, url, postData)
+	return k.Client.PostData(ctx, k.Config, url, postData)
 }
 
 //Draft. 暂存
 //formId 表单ID
 //data   数据
-func (k *K3Cloud) Draft(ctx context.Context, formId string, data *object.HashMap) (*object.HashMap, error) {
+func (k *K3Cloud) Draft(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
 	url := k.Config.Host + DraftApi
 	var postData = &object.HashMap{
 		"formid": formId,
 		"data":   data,
 	}
-	return k.Client.PostJson(ctx, k.Config, url, postData)
+	return k.Client.PostData(ctx, k.Config, url, postData)
 }
 
 //Delete. 删除
 //formId  表单ID
 //data    数据
-func (k *K3Cloud) Delete(ctx context.Context, formId string, data *object.HashMap) (*object.HashMap, error) {
+func (k *K3Cloud) Delete(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
 	url := k.Config.Host + DeleteApi
 	var postData = &object.HashMap{
 		"formid": formId,
 		"data":   data,
 	}
-	return k.Client.PostJson(ctx, k.Config, url, postData)
+	return k.Client.PostData(ctx, k.Config, url, postData)
 }
 
 //Allocate. 分配
@@ -201,12 +186,12 @@ func (k *K3Cloud) FlexSave(ctx context.Context, formId string, data *object.Hash
 
 //SendMsg. 发送消息
 //data     数据
-func (k *K3Cloud) SendMsg(ctx context.Context, data *object.HashMap) (*object.HashMap, error) {
+func (k *K3Cloud) SendMsg(ctx context.Context, data *object.HashMap) ([]byte, error) {
 	url := k.Config.Host + SendMsgApi
 	var postData = &object.HashMap{
 		"data": data,
 	}
-	return k.Client.PostJson(ctx, k.Config, url, postData)
+	return k.Client.PostData(ctx, k.Config, url, postData)
 }
 
 //Disassembly. 拆单
