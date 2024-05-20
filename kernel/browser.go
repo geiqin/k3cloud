@@ -244,7 +244,7 @@ func (b *Browser) PostData(ctx context.Context, c *K3Config, requestUrl string, 
 	}
 	log.Println("-----------PostData---------------", string(data))
 	//var res object.HashMap
-	if requestUrl == ExecuteBillQueryApi {
+	if strings.HasSuffix(requestUrl, ExecuteBillQueryApi) {
 		_, ok := gjson.Parse(string(data)).Value().(map[string]interface{})
 		if !ok {
 			var k3Response [][]*resp.K3Response
