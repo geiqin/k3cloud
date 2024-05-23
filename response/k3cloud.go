@@ -9,7 +9,7 @@ type Result struct {
 	ID             int              `json:"Id"`
 	Number         string           `json:"Number"`
 	NeedReturnData []NeedReturnData `json:"NeedReturnData"`
-	Result         string           `json:"Result"` //查看接口可用
+	Result         interface{}      `json:"Result"` //查看接口可用
 }
 
 type NeedReturnData struct {
