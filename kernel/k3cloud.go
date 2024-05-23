@@ -107,6 +107,19 @@ func (k *K3Cloud) View(ctx context.Context, formId string, data *object.HashMap)
 	return &resp.Result, err
 }
 
+//View.  详情
+//formId 查询表单ID
+//data   查询数据
+func (k *K3Cloud) View2(ctx context.Context, formId string, data *object.HashMap) ([]byte, error) {
+	url := k.Config.Host + ViewApi
+	var postData = &object.HashMap{
+		"formid": formId,
+		"data":   data,
+	}
+
+	return k.Client.PostData(ctx, k.Config, url, postData)
+}
+
 // ExecuteBillQuery. 单据查询
 func (k *K3Cloud) ExecuteBillQuery(ctx context.Context, data *object.HashMap) ([][]interface{}, error) {
 	url := k.Config.Host + ExecuteBillQueryApi
