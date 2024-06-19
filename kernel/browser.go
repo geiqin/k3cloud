@@ -245,6 +245,12 @@ func (b *Browser) PostData(ctx context.Context, c *K3Config, requestUrl string, 
 	log.Println("-----------PostData---------------", string(data))
 	//var res object.HashMap
 	if strings.HasSuffix(requestUrl, ExecuteBillQueryApi) {
+		var retList [][]interface{}
+		err = json.Unmarshal(data, &retList)
+		if err != nil {
+			return nil, err
+		}
+
 		_, ok := gjson.Parse(string(data)).Value().(map[string]interface{})
 		if !ok {
 			var k3Response [][]*resp.K3Response

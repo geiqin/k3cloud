@@ -6,7 +6,7 @@ type K3Response struct {
 
 type Result struct {
 	Status         K3Status         `json:"ResponseStatus"`
-	ID             int              `json:"Id"`
+	ID             string           `json:"Id"`
 	Number         string           `json:"Number"`
 	NeedReturnData []NeedReturnData `json:"NeedReturnData"`
 	Result         interface{}      `json:"Result"` //查看接口可用
