@@ -47,7 +47,19 @@ func (k *K3Cloud) Save(ctx context.Context, formId string, data *object.HashMap)
 	var resp = &response.K3Response{}
 	err = json.Unmarshal(ret, &resp)
 	if err != nil {
-		return nil, err
+		resp2 := &response.K3Response2{}
+		err = json.Unmarshal(ret, resp2)
+		if err != nil {
+			return nil, err
+		}
+		newResult := &response.Result{
+			Status:         resp2.Result.Status,
+			ID:             0,
+			Number:         resp2.Result.Number,
+			NeedReturnData: resp2.Result.NeedReturnData,
+			Result:         resp2.Result.Result,
+		}
+		return newResult, err
 	}
 	return &resp.Result, err
 }
